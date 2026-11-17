@@ -1,0 +1,15 @@
+rules_version = '2';
+
+// In der Firebase-Konsole unter Firestore → Regeln einfügen und veröffentlichen.
+// Die UID unten ist die des Eigentümer-Kontos (Authentication → Nutzer → Nutzer-UID).
+// Nur dieses eine Konto darf lesen und schreiben – auch wenn sich jemand über die
+// öffentliche Web-Config selbst ein Konto anlegen sollte, hat es keinen Zugriff.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{uid}/{document=**} {
+      allow read, write: if request.auth != null
+                         && request.auth.uid == uid
+                         && uid == '9hz2Ie49I7OQOFH2HE4rHZeWEX82';
+    }
+  }
+}
